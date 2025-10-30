@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/loader.dir/link.d CMakeFiles/loader.dir/main.cpp.o -o loader  /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlienc.a /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlidec.a /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlicommon.a -lm

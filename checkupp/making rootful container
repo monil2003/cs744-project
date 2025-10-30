@@ -1,0 +1,45 @@
+monil@fedora:~/Desktop/Work/DECS/Project$ podman save -o postgres_latest.tar docker.io/library/postgres:latest
+Copying blob 1d46119d249f done   | 
+Copying blob a9b74bbbba24 done   | 
+Copying blob af76e12aa831 done   | 
+Copying blob 01e8a18dc9b2 done   | 
+Copying blob 60587f31ccd4 done   | 
+Copying blob dad63314a339 done   | 
+Copying blob 04d52f0a5b32 done   | 
+Copying blob ca7f2e5210d6 done   | 
+Copying blob aae2dbb17823 done   | 
+Copying blob c9655bf591ee done   | 
+Copying blob 62f0a60f9afc done   | 
+Copying blob 30d59a0e59ba done   | 
+Copying blob e4a2b82444b1 done   | 
+Copying blob 88763bd2f916 done   | 
+Copying config 194f5f2a90 done   | 
+Writing manifest to image destination
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo podman load -i postgres_latest.tar
+Getting image source signatures
+Copying blob dad63314a339 done   | 
+Copying blob 1d46119d249f done   | 
+Copying blob af76e12aa831 done   | 
+Copying blob a9b74bbbba24 done   | 
+Copying blob 01e8a18dc9b2 done   | 
+Copying blob 60587f31ccd4 done   | 
+Copying blob 04d52f0a5b32 done   | 
+Copying blob ca7f2e5210d6 done   | 
+Copying blob aae2dbb17823 done   | 
+Copying blob c9655bf591ee done   | 
+Copying blob 62f0a60f9afc done   | 
+Copying blob 30d59a0e59ba done   | 
+Copying blob e4a2b82444b1 done   | 
+Copying blob 88763bd2f916 done   | 
+Copying config 194f5f2a90 done   | 
+Writing manifest to image destination
+Loaded image: docker.io/library/postgres:latest
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo podman run --name cs744-db1 -e POSTGRES_PASSWORD=mysecretpassword -p 5433:5432 -d postgres:latest
+c31421a8db9db1781f3cea74162cb2f713b13d959eed497eb541d2f53d65dfd4
+monil@fedora:~/Desktop/Work/DECS/Project$ podman ps -a
+CONTAINER ID  IMAGE                              COMMAND     CREATED       STATUS         PORTS                   NAMES
+8c3c9cbad88a  docker.io/library/postgres:latest  postgres    21 hours ago  Up 26 minutes  0.0.0.0:5432->5432/tcp  cs744-db
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo podman ps -a
+CONTAINER ID  IMAGE                              COMMAND     CREATED         STATUS         PORTS                   NAMES
+c31421a8db9d  docker.io/library/postgres:latest  postgres    22 seconds ago  Up 22 seconds  0.0.0.0:5433->5432/tcp  cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo bash simulate_io_slowdown.sh --container cs744-db1 --no-netem --read 3 --write 1 --podman

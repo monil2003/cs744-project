@@ -1,0 +1,33 @@
+monil@fedora:~/Desktop/Work/DECS$ docker compose version
+Docker Compose version v2.40.2
+monil@fedora:~/Desktop/Work/DECS$ cd project
+bash: cd: project: No such file or directory
+monil@fedora:~/Desktop/Work/DECS$ cd Project
+monil@fedora:~/Desktop/Work/DECS/Project$ docker compose up -d
+
+monil@fedora:~/Desktop/Work/DECS/Project$ docker exec -it stress_postgres psql -U stressuser -d stressdb         
+permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/containers/stress_postgres/json": dial unix /var/run/docker.sock: connect: permission denied
+monil@fedora:~/Desktop/Work/DECS/Project$ docker exec -it stress_postgres psql -U stressuser -d stressdb
+permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/containers/stress_postgres/json": dial unix /var/run/docker.sock: connect: permission denied
+monil@fedora:~/Desktop/Work/DECS/Project$ 
+monil@fedora:~/Desktop/Work/DECS/Project$ docker ps
+permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/containers/json": dial unix /var/run/docker.sock: connect: permission denied
+monil@fedora:~/Desktop/Work/DECS/Project$ groups
+monil wheel
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo usermod -aG docker $USER
+[sudo] password for monil: 
+monil@fedora:~/Desktop/Work/DECS/Project$ groups
+monil wheel
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo usermod -aG docker $USER
+monil@fedora:~/Desktop/Work/DECS/Project$ getent group docker
+docker:x:968:monil
+monil@fedora:~/Desktop/Work/DECS/Project$ newgrp docker
+monil@fedora:~/Desktop/Work/DECS/Project$ docker ps
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS          PORTS                                         NAMES
+81221bbfccfc   postgres:16   "docker-entrypoint.s…"   10 minutes ago   Up 10 minutes   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp   stress_postgres
+monil@fedora:~/Desktop/Work/DECS/Project$ groups
+docker wheel monil
+
+
+monil@fedora:~/Desktop/Work/DECS/Project$ docker inspect --format='{{.HostConfig.CpusetCpus}}' stress_postgres
+0-3

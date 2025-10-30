@@ -1,0 +1,40 @@
+# Use official Ubuntu base image
+FROM ubuntu:22.04
+
+# Install dependencies (include pkg-config for vcpkg)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    curl \
+    cmake \
+    zip \
+    unzip \
+    tar \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Install vcpkg
+RUN git clone https://github.com/microsoft/vcpkg.git /opt/vcpkg && \
+    /opt/vcpkg/bootstrap-vcpkg.sh
+
+# Add vcpkg to PATH
+ENV VCPKG_ROOT=/opt/vcpkg
+ENV PATH="${VCPKG_ROOT}:${PATH}"
+
+# Install httplib via vcpkg
+RUN /opt/vcpkg/vcpkg install cpp-httplib
+
+# Copy source
+COPY main.cpp .
+
+# Compile directly using g++ (no CMakeLists needed)
+RUN g++ -std=c++17 main.cpp -o loader -I/opt/vcpkg/installed/x64-linux/include -L/opt/vcpkg/installed/x64-linux/lib
+
+# Default directory
+WORKDIR /app
+
+# Use ENTRYPOINT to allow passing runtime arguments
+ENTRYPOINT ["./loader"]

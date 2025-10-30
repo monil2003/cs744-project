@@ -1,0 +1,4 @@
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo find /tmp -maxdepth 1 -type d -name "stress-ng.hdd*" 2>/dev/null
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo rm -rf stress-ng.hdd.*
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo rm -rf /tmp/stress-ng.hdd.*
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo stress-ng --hdd 8 --hdd-bytes 4G --hdd-opts wr-seq --timeout 15 --metrics-brief | tee ssd_stress_report.txt

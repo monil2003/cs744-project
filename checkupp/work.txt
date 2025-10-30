@@ -1,0 +1,131 @@
+POSTGRES:
+run all in sudo
+podman run --name cs744-db -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d docker.io/library/postgres
+podman ps
+podman stats cs744-db
+podman stop cs744-db 
+podman start cs744-db 
+podman exec -it cs744-db psql -U postgres
+\d kv_store
+sudo podman container update --cpuset-cpus 0-1 cs744-db1
+sudo podman inspect cs744-db1 | grep CpusetCpus
+CREATE TABLE IF NOT EXISTS kv_store (
+    key_text   TEXT PRIMARY KEY,
+    value_text TEXT NOT NULL
+);
+
+
+VCPKG:
+git clone https://github.com/microsoft/vcpkg
+install any dependencies if needed like autoconf etc.
+./vcpkg install cpp-httplib
+./vcpkg install libpqxx
+
+
+CMAKE:
+make a cmake file
+in a build folder first time run
+cmake .. -DCMAKE_TOOLCHAIN_FILE=$HOME/dev/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+cmake --build .
+./server_app
+
+To check:
+htop -p $(pgrep server_app)
+iostat -x -z 1
+vmstat 1
+
+monil@fedora:~$ time nc -vz ep-fancy-glade-adxpjfbo-pooler.c-2.us-east-1.aws.neon.tech 5432
+Ncat: Version 7.92 ( https://nmap.org/ncat )
+Ncat: Connected to 64:ff9b::369c:f1e:5432.
+Ncat: 0 bytes sent, 0 bytes received in 0.64 seconds.
+
+real	0m0.682s
+user	0m0.014s
+sys	0m0.010s
+
+taskset -c 9-15 ./loader 32 30 get_popular
+taskset -c 4-8 ./server_app
+
+69% i/o util
+taskset -c 2-8 ./server_app
+taskset -c 9-15 ./loader 64 30 put_all
+taskset -c 0-1 podman start cs744-db
+
+cpu core configuration can be anything and starting from thread 4 same amount of i/o util
+in server increasing beyond 64 to 128 degrades i/o due to too many context switches
+
+Device            r/s     rMB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wMB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dMB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+nvme0n1          0.00      0.00     0.00   0.00    0.00     0.00  807.00     10.24     0.00   0.00    2.55    13.00   82.00      7.45     0.00   0.00    9.79    93.02   62.00    1.31    2.95  79.70
+peak avg at 42 threads client
+
+set to performance mode and we get to 89% yeh
+
+
+podman bkl
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo ss -lntp | grep 5432
+[sudo] password for monil: 
+LISTEN 0      128                *:5432             *:*    users:(("pasta.avx2",pid=34759,fd=6))    
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo podman stop                 
+Error: you must provide at least one name or id
+monil@fedora:~/Desktop/Work/DECS/Project$ podman ps -a
+CONTAINER ID  IMAGE                              COMMAND     CREATED        STATUS                    PORTS                   NAMES
+3241c526cfb6  docker.io/library/postgres:latest  postgres    22 hours ago   Exited (0) 3 minutes ago  0.0.0.0:5432->5432/tcp  cs744-db
+a768c02a4067  docker.io/library/postgres:latest  postgres    3 minutes ago  Up 3 minutes              0.0.0.0:5432->5432/tcp  cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo podman ps -a
+
+
+CONTAINER ID  IMAGE                              COMMAND     CREATED       STATUS                   PORTS                   NAMES
+c31421a8db9d  docker.io/library/postgres:latest  postgres    31 hours ago  Exited (0) 22 hours ago  0.0.0.0:5433->5432/tcp  cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo podman stop cs744-db1 
+cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo podman ps -a
+CONTAINER ID  IMAGE                              COMMAND     CREATED       STATUS                   PORTS                   NAMES
+c31421a8db9d  docker.io/library/postgres:latest  postgres    31 hours ago  Exited (0) 22 hours ago  0.0.0.0:5433->5432/tcp  cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ podman ps -a
+CONTAINER ID  IMAGE                              COMMAND     CREATED        STATUS                    PORTS                   NAMES
+3241c526cfb6  docker.io/library/postgres:latest  postgres    22 hours ago   Exited (0) 4 minutes ago  0.0.0.0:5432->5432/tcp  cs744-db
+a768c02a4067  docker.io/library/postgres:latest  postgres    4 minutes ago  Up 4 minutes              0.0.0.0:5432->5432/tcp  cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ podman stop cs744-db1 
+cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo ss -lntp | grep 5432
+monil@fedora:~/Desktop/Work/DECS/Project$ podman start cs744-db1 
+cs744-db1
+
+
+
+SHOW max_connections;
+SHOW wal_buffers;
+SHOW shared_buffers;
+SHOW effective_cache_size;
+SHOW synchronous_commit;
+ALTER SYSTEM RESET wal_buffers;
+ALTER SYSTEM RESET shared_buffers;
+ALTER SYSTEM RESET synchronous_commit;
+SELECT pg_reload_conf();
+
+ALTER SYSTEM SET max_connections = 200;
+
+docker compose set up 
+and try inn another pc 
+stressng
+
+
+monil@fedora ~/D/W/D/P/c/build (main) [SIGINT]> taskset -c 4-13 ./server_app
+Table created successfully!
+Table created successfully!
+Starting HTTP KV Server (sync DB I/O) on port 8081...
+
+monil@fedora:~/Desktop/Work/DECS/Project/load_generator/build$ taskset -c 14-15 ./loader 200 30 put_all
+Starting load test...
+Threads: 200
+Duration: 30 seconds
+Workload: put_all
+
+Stopping all worker threads and calculating metrics...
+
+Test complete.
+------------------------------------------------------
+Total Requests Completed:    61949
+Average Throughput:          2064.97 reqs/sec
+Average Response Time:       92.5234 ms
