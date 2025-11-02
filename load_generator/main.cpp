@@ -14,26 +14,33 @@ atomic<bool> keep_running(true);
 atomic<unsigned long> total_req(0);
 atomic<unsigned long> total_resp_time(0);
 atomic<int> v(1);
-// static string big_value(1024*1024, 'X');   //To show mem full application not allowed;
 void worker_thread(const string &w_type, int thread_id)
 {
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> popular_dist(1, 10);
+    uniform_int_distribution<> popular_dist(1, 100);
     uniform_int_distribution<> all_dist(1, 10000000);
 
     httplib::Client cli("localhost", 8080);
-    // httplib::Client cli("host.docker.internal",8080);
+    
     while (keep_running)
     {
         string key;
         httplib::Result res;
+        
         chrono::steady_clock::time_point start_time;
         chrono::steady_clock::time_point end_time;
 
-        if (w_type == "get_popular")
+        if (w_type == "get_popular1")
         {
             key = "key-" + to_string((thread_id % 10) + 1);
+            string path = "/" + key;
+            start_time = chrono::steady_clock::now();
+            res = cli.Get(path.c_str());
+            end_time = chrono::steady_clock::now();
+        }
+        if (w_type == "get_popular2"){
+            key = "key-" + to_string(popular_dist(gen));
             string path = "/" + key;
             start_time = chrono::steady_clock::now();
             res = cli.Get(path.c_str());
@@ -50,21 +57,65 @@ void worker_thread(const string &w_type, int thread_id)
         else if (w_type == "put_all")
         {
             // Generate a unique key
-            // key = "key-" + to_string(v.fetch_add(1));
-            // string big_value(1024 * 1024 * 1024, 'X');
             key = "key-" + to_string(all_dist(gen));
             string path = "/" + key;
             start_time = chrono::steady_clock::now();
-            res = cli.Post(path.c_str(),key, "text/plain");
-            // res = cli.Post(path.c_str(), key, "text/plain");
-            // cout<<key;
+            res = cli.Post(path.c_str(), key, "text/plain");
             end_time = chrono::steady_clock::now();
-            // string().swap(big_value);
+        }
+        else if (w_type == "put_all_big")
+        {
+            string big_value(2 *10* 1024, 'X');
+            key = "key-" + to_string(v.fetch_add(1));
+            string path = "/" + key;
+            start_time = chrono::steady_clock::now();
+            res = cli.Post(path.c_str(), big_value, "text/plain");
+            end_time = chrono::steady_clock::now();
+            string().swap(big_value);
+        }
+        else if (w_type == "put_key_1"){
+            key = "key-1";
+            string path = "/" + key;
+            start_time = chrono::steady_clock::now();
+            res = cli.Post(path.c_str(), key, "text/plain");
+            end_time = chrono::steady_clock::now();
+        }
+        else if (w_type == "mixed")
+        {
+            int op_type = all_dist(gen) % 10;
+            if (op_type < 4)
+            {
+                key = "key-" + to_string((thread_id % 10) + 1);
+                string path = "/" + key;
+                start_time = chrono::steady_clock::now();
+                res = cli.Get(path.c_str());
+                end_time = chrono::steady_clock::now();
+            }
+            else if (op_type < 7)
+            {
+                key = "key-" + to_string(all_dist(gen));
+                string path = "/" + key;
+                start_time = chrono::steady_clock::now();
+                res = cli.Get(path.c_str());
+                end_time = chrono::steady_clock::now();
+            }
+            else
+            {
+                key = "key-" + to_string(all_dist(gen));
+                string path = "/" + key;
+                start_time = chrono::steady_clock::now();
+                res = cli.Post(path.c_str(), key, "text/plain");
+                end_time = chrono::steady_clock::now();
+            }
         }
 
         if (!keep_running)
             break;
-
+        if (!res) {
+            // cerr << "[Thread " << thread_id << "] Connection failed " << endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            continue;
+        }
         if (res && (res->status == 200 || res->status == 201 || res->status == 404 || res->status == 500))
         {
             auto duration_ms = chrono::duration_cast<chrono::milliseconds>(end_time - start_time).count();
@@ -87,9 +138,9 @@ int main(int argc, char *argv[])
     unsigned long duration_seconds = stoul(argv[2]);
     string w_type = argv[3];
 
-    if (w_type != "get_popular" && w_type != "get_all" && w_type != "put_all")
+    if (w_type != "get_popular1" && w_type !="get_popular2" && w_type != "get_all" && w_type != "put_all" && w_type != "put_all_big" && w_type != "mixed" && w_type != "put_key_1")
     {
-        cerr << "Invalid workload type. Use 'get_popular', 'get_all', or 'put_all'." << endl;
+        cerr << "Invalid workload type. Use 'get_popular1', 'get_popular2', 'get_all', or 'put_all' or 'put_all_big' or 'put_key_1' or 'mixed'." << endl;
         return 1;
     }
 

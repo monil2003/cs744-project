@@ -129,29 +129,29 @@ server_app/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_app.dir/build.make CMakeFiles/server_app.dir/build
 .PHONY : server_app/fast
 
-main.o: main.cpp.o
-.PHONY : main.o
+async-db.o: async-db.cpp.o
+.PHONY : async-db.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_app.dir/build.make CMakeFiles/server_app.dir/main.cpp.o
-.PHONY : main.cpp.o
+async-db.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_app.dir/build.make CMakeFiles/server_app.dir/async-db.cpp.o
+.PHONY : async-db.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+async-db.i: async-db.cpp.i
+.PHONY : async-db.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_app.dir/build.make CMakeFiles/server_app.dir/main.cpp.i
-.PHONY : main.cpp.i
+async-db.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_app.dir/build.make CMakeFiles/server_app.dir/async-db.cpp.i
+.PHONY : async-db.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+async-db.s: async-db.cpp.s
+.PHONY : async-db.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_app.dir/build.make CMakeFiles/server_app.dir/main.cpp.s
-.PHONY : main.cpp.s
+async-db.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_app.dir/build.make CMakeFiles/server_app.dir/async-db.cpp.s
+.PHONY : async-db.cpp.s
 
 # Help Target
 help:
@@ -162,9 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... server_app"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... async-db.o"
+	@echo "... async-db.i"
+	@echo "... async-db.s"
 .PHONY : help
 
 

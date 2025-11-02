@@ -1,0 +1,5 @@
+docker build -t loader_app .
+
+# Run pinned to cores 12–15, with 3GB memory limit
+
+docker run -it --rm  --init --name my_loader_test --memory=3g --memory-swap=3g --cpuset-cpus="14-15"  --network=host  loader_app 30 30 get_popular

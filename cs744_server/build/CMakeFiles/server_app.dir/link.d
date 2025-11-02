@@ -2,7 +2,7 @@ server_app: \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crt1.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o \
-  CMakeFiles/server_app.dir/main.cpp.o \
+  CMakeFiles/server_app.dir/async-db.cpp.o \
   /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libpqxx-7.10.a \
   /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlienc.a \
   /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlidec.a \
@@ -47,7 +47,7 @@ server_app: \
 
 /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o:
 
-CMakeFiles/server_app.dir/main.cpp.o:
+CMakeFiles/server_app.dir/async-db.cpp.o:
 
 /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libpqxx-7.10.a:
 

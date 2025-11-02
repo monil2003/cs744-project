@@ -21,22 +21,9 @@ using std::make_unique;
 using std::shared_lock;
 using std::shared_mutex;
 using std::unique_lock;
-// hello
-static string big_value(1024, 'X');
+
+
 const size_t CACHE_MAX_SIZE = 100;
-// const char *DB_CONN =
-//     "host=ep-fancy-glade-adxpjfbo-pooler.c-2.us-east-1.aws.neon.tech "
-//     "port=5432 "
-//     "dbname=neondb "
-//     "user=neondb_owner "
-//     "password=npg_brP9kR7mxGWs "
-//     "sslmode=require "
-//     "channel_binding=require";
-// const char *DB_CONN =
-//     "host=localhost port=5433 "
-//     "dbname=postgres "
-//     "user=postgres "
-//     "password=mysecretpassword";
 
 const char *DB_CONN1 =
     "host=127.0.0.1 port=5432 "
@@ -55,40 +42,31 @@ const char *DB_CONN3 =
     "dbname=stressdb "
     "user=stressuser "
     "password=stresspass";
-// --- Thread-local DB connection ---
-thread_local std::unique_ptr<pqxx::connection> thread_conn_ptr;
-atomic<int> v(1);
-int g=2;
-pqxx::connection &get_thread_conn()
-{
-    int k = v.fetch_add(1);
-    if (k % g == 0)
-    {
-        if (!thread_conn_ptr || !thread_conn_ptr->is_open())
-        {
-            thread_conn_ptr = make_unique<pqxx::connection>(DB_CONN1);
-        }
-        return *thread_conn_ptr;
-    }
-    else if (k % g == 1)
-    {
-        if (!thread_conn_ptr || !thread_conn_ptr->is_open())
-        {
-            thread_conn_ptr = make_unique<pqxx::connection>(DB_CONN2);
-        }
-        return *thread_conn_ptr;
-    }
-    else
-    {
-        if (!thread_conn_ptr || !thread_conn_ptr->is_open())
-        {
-            thread_conn_ptr = make_unique<pqxx::connection>(DB_CONN3);
-        }
-        return *thread_conn_ptr;
-    }
+
+thread_local unique_ptr<pqxx::connection> thread_conn1;
+thread_local unique_ptr<pqxx::connection> thread_conn2;
+thread_local unique_ptr<pqxx::connection> thread_conn3;
+
+void init_thread_conns() {
+    if (!thread_conn1 || !thread_conn1->is_open())
+        thread_conn1 = make_unique<pqxx::connection>(DB_CONN1);
+    if (!thread_conn2 || !thread_conn2->is_open())
+        thread_conn2 = make_unique<pqxx::connection>(DB_CONN2);
+    // if (!thread_conn3 || !thread_conn3->is_open())
+    //     thread_conn3 = make_unique<pqxx::connection>(DB_CONN3);
 }
 
-// --- Metrics Structure ---
+// Choose DB based on key hash
+pqxx::connection &get_thread_conn_for_key(const string &key) {
+    init_thread_conns();
+    size_t idx = std::hash<std::string>{}(key) % 2;
+    if (idx == 0) return *thread_conn1;
+    else if (idx == 1) return *thread_conn2;
+    else return *thread_conn3;
+}
+
+
+//Metrics
 struct Metrics
 {
     atomic<size_t> cache_hits{0};
@@ -102,7 +80,7 @@ struct Metrics
     atomic<double> avg_db_write_latency_ms{0.0};
 } metrics;
 
-// --- LRU Cache ---
+
 class LRUCache
 {
 public:
@@ -183,7 +161,6 @@ private:
 
 LRUCache kv_cache(CACHE_MAX_SIZE);
 
-// --- Helper ---
 string path_to_key(const httplib::Request &req)
 {
     string p = req.path;
@@ -192,7 +169,6 @@ string path_to_key(const httplib::Request &req)
     return p;
 }
 
-// --- Handlers ---
 void handle_get(const httplib::Request &req, httplib::Response &rsp)
 {
     metrics.total_gets++;
@@ -215,7 +191,7 @@ void handle_get(const httplib::Request &req, httplib::Response &rsp)
     auto start_time = steady_clock::now();
     try
     {
-        work W(get_thread_conn());
+        work W(get_thread_conn_for_key(key));
         string query = "SELECT value_text FROM kv_store WHERE key_text = " + W.quote(key) + ";";
         result R = W.exec(query);
         W.commit();
@@ -263,7 +239,7 @@ void handle_post(const httplib::Request &req, httplib::Response &rsp)
     auto start_time = steady_clock::now();
     try
     {
-        work W(get_thread_conn());
+        work W(get_thread_conn_for_key(key));
         string query =
             "INSERT INTO kv_store (key_text, value_text) VALUES (" +
             W.quote(key) + ", " + W.quote(value) +
@@ -301,7 +277,7 @@ void handle_delete(const httplib::Request &req, httplib::Response &rsp)
     auto start_time = steady_clock::now();
     try
     {
-        work W(get_thread_conn());
+        work W(get_thread_conn_for_key(key));
         string query = "DELETE FROM kv_store WHERE key_text = " + W.quote(key) + ";";
         W.exec(query);
         W.commit();
@@ -323,7 +299,6 @@ void handle_delete(const httplib::Request &req, httplib::Response &rsp)
     }
 }
 
-// --- Metrics Endpoint ---
 void handle_metrics(const httplib::Request &, httplib::Response &rsp)
 {
     stringstream ss;
@@ -347,7 +322,6 @@ void handle_metrics(const httplib::Request &, httplib::Response &rsp)
     rsp.set_content(ss.str(), "text/plain");
 }
 
-// --- Main ---
 int main()
 {
     try

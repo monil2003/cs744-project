@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: stressuser
       POSTGRES_PASSWORD: stresspass
       POSTGRES_DB: stressdb
-      max_connections: 200 # This parameter is already handled correctly via the command
+      max_connections: 500 # This parameter is already handled correctly via the command
     ports:
       - "5432:5432" # Changed to 5432 for the first container
     volumes:
@@ -18,7 +18,7 @@ services:
       resources:
         limits:
           cpus: '4.0'
-    cpuset: "0-2"
+    cpuset: "0-1"
   
   db2:
     image: postgres:16
@@ -28,7 +28,7 @@ services:
       POSTGRES_USER: stressuser
       POSTGRES_PASSWORD: stresspass
       POSTGRES_DB: stressdb
-      max_connections: 200 # This parameter is already handled correctly via the command
+      max_connections: 500 # This parameter is already handled correctly via the command
     ports:
       - "5433:5432" # Changed to a different host port (5433) for the second container
     volumes:
@@ -38,7 +38,7 @@ services:
       resources:
         limits:
           cpus: '4.0'
-    cpuset: "3-5" # Changed to a different cpuset
+    cpuset: "2-3" # Changed to a different cpuset
 
   # db3:
   #   image: postgres:16

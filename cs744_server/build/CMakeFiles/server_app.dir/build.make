@@ -72,28 +72,28 @@ include CMakeFiles/server_app.dir/flags.make
 CMakeFiles/server_app.dir/codegen:
 .PHONY : CMakeFiles/server_app.dir/codegen
 
-CMakeFiles/server_app.dir/main.cpp.o: CMakeFiles/server_app.dir/flags.make
-CMakeFiles/server_app.dir/main.cpp.o: /home/monil/Desktop/Work/DECS/Project/cs744_server/main.cpp
-CMakeFiles/server_app.dir/main.cpp.o: CMakeFiles/server_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/monil/Desktop/Work/DECS/Project/cs744_server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/server_app.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server_app.dir/main.cpp.o -MF CMakeFiles/server_app.dir/main.cpp.o.d -o CMakeFiles/server_app.dir/main.cpp.o -c /home/monil/Desktop/Work/DECS/Project/cs744_server/main.cpp
+CMakeFiles/server_app.dir/async-db.cpp.o: CMakeFiles/server_app.dir/flags.make
+CMakeFiles/server_app.dir/async-db.cpp.o: /home/monil/Desktop/Work/DECS/Project/cs744_server/async-db.cpp
+CMakeFiles/server_app.dir/async-db.cpp.o: CMakeFiles/server_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/monil/Desktop/Work/DECS/Project/cs744_server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/server_app.dir/async-db.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server_app.dir/async-db.cpp.o -MF CMakeFiles/server_app.dir/async-db.cpp.o.d -o CMakeFiles/server_app.dir/async-db.cpp.o -c /home/monil/Desktop/Work/DECS/Project/cs744_server/async-db.cpp
 
-CMakeFiles/server_app.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/server_app.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/monil/Desktop/Work/DECS/Project/cs744_server/main.cpp > CMakeFiles/server_app.dir/main.cpp.i
+CMakeFiles/server_app.dir/async-db.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/server_app.dir/async-db.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/monil/Desktop/Work/DECS/Project/cs744_server/async-db.cpp > CMakeFiles/server_app.dir/async-db.cpp.i
 
-CMakeFiles/server_app.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/server_app.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/monil/Desktop/Work/DECS/Project/cs744_server/main.cpp -o CMakeFiles/server_app.dir/main.cpp.s
+CMakeFiles/server_app.dir/async-db.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/server_app.dir/async-db.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/monil/Desktop/Work/DECS/Project/cs744_server/async-db.cpp -o CMakeFiles/server_app.dir/async-db.cpp.s
 
 # Object files for target server_app
 server_app_OBJECTS = \
-"CMakeFiles/server_app.dir/main.cpp.o"
+"CMakeFiles/server_app.dir/async-db.cpp.o"
 
 # External object files for target server_app
 server_app_EXTERNAL_OBJECTS =
 
-server_app: CMakeFiles/server_app.dir/main.cpp.o
+server_app: CMakeFiles/server_app.dir/async-db.cpp.o
 server_app: CMakeFiles/server_app.dir/build.make
 server_app: CMakeFiles/server_app.dir/compiler_depend.ts
 server_app: /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libpqxx-7.10.a
