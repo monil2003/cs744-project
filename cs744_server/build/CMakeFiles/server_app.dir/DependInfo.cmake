@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/monil/Desktop/Work/DECS/Project/cs744_server/async-db.cpp" "CMakeFiles/server_app.dir/async-db.cpp.o" "gcc" "CMakeFiles/server_app.dir/async-db.cpp.o.d"
+  "/home/monil/Desktop/Work/DECS/Project/cs744_server/main.cpp" "CMakeFiles/server_app.dir/main.cpp.o" "gcc" "CMakeFiles/server_app.dir/main.cpp.o.d"
   "" "server_app" "gcc" "CMakeFiles/server_app.dir/link.d"
   )
 

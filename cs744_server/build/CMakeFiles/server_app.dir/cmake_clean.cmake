@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/server_app.dir/link.d"
-  "CMakeFiles/server_app.dir/async-db.cpp.o"
-  "CMakeFiles/server_app.dir/async-db.cpp.o.d"
+  "CMakeFiles/server_app.dir/main.cpp.o"
+  "CMakeFiles/server_app.dir/main.cpp.o.d"
   "server_app"
   "server_app.pdb"
 )

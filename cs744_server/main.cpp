@@ -343,16 +343,6 @@ int main()
         )");
         txn2.commit();
         std::cout << "Table created successfully!\n";
-        pqxx::connection c3("host=127.0.0.1 port=5434 dbname=stressdb user=stressuser password=stresspass");
-        pqxx::work txn3(c3);
-        txn3.exec(R"(
-            CREATE TABLE IF NOT EXISTS kv_store (
-                key_text TEXT PRIMARY KEY,
-                value_text TEXT
-            );
-        )");
-        txn3.commit();
-        std::cout << "Table created successfully!\n";
     }
     catch (const std::exception &e)
     {
@@ -370,7 +360,7 @@ int main()
     svr.Post(R"(/.*)", handle_post);
     svr.Delete(R"(/.*)", handle_delete);
 
-    cout << "Starting HTTP KV Server (sync DB I/O) on port 8081..." << endl;
+    cout << "Starting HTTP KV Server (sync DB I/O) on port 8080..." << endl;
     svr.new_task_queue = []
     {
         return new httplib::ThreadPool(200); // increase manually

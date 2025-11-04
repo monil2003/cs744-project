@@ -1,0 +1,59 @@
+POSTGRES:
+run all in sudo
+podman run --name cs744-db -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d docker.io/library/postgres
+podman ps
+podman stats cs744-db
+podman stop cs744-db 
+podman start cs744-db 
+podman exec -it cs744-db psql -U postgres
+\d kv_store
+sudo podman container update --cpuset-cpus 0-1 cs744-db1
+sudo podman inspect cs744-db1 | grep CpusetCpus
+CREATE TABLE IF NOT EXISTS kv_store (
+    key_text   TEXT PRIMARY KEY,
+    value_text TEXT NOT NULL
+);
+
+podman bkl
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo ss -lntp | grep 5432
+[sudo] password for monil: 
+LISTEN 0      128                *:5432             *:*    users:(("pasta.avx2",pid=34759,fd=6))    
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo podman stop                 
+Error: you must provide at least one name or id
+monil@fedora:~/Desktop/Work/DECS/Project$ podman ps -a
+CONTAINER ID  IMAGE                              COMMAND     CREATED        STATUS                    PORTS                   NAMES
+3241c526cfb6  docker.io/library/postgres:latest  postgres    22 hours ago   Exited (0) 3 minutes ago  0.0.0.0:5432->5432/tcp  cs744-db
+a768c02a4067  docker.io/library/postgres:latest  postgres    3 minutes ago  Up 3 minutes              0.0.0.0:5432->5432/tcp  cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo podman ps -a
+
+
+CONTAINER ID  IMAGE                              COMMAND     CREATED       STATUS                   PORTS                   NAMES
+c31421a8db9d  docker.io/library/postgres:latest  postgres    31 hours ago  Exited (0) 22 hours ago  0.0.0.0:5433->5432/tcp  cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo podman stop cs744-db1 
+cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo podman ps -a
+CONTAINER ID  IMAGE                              COMMAND     CREATED       STATUS                   PORTS                   NAMES
+c31421a8db9d  docker.io/library/postgres:latest  postgres    31 hours ago  Exited (0) 22 hours ago  0.0.0.0:5433->5432/tcp  cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ podman ps -a
+CONTAINER ID  IMAGE                              COMMAND     CREATED        STATUS                    PORTS                   NAMES
+3241c526cfb6  docker.io/library/postgres:latest  postgres    22 hours ago   Exited (0) 4 minutes ago  0.0.0.0:5432->5432/tcp  cs744-db
+a768c02a4067  docker.io/library/postgres:latest  postgres    4 minutes ago  Up 4 minutes              0.0.0.0:5432->5432/tcp  cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ podman stop cs744-db1 
+cs744-db1
+monil@fedora:~/Desktop/Work/DECS/Project$ sudo ss -lntp | grep 5432
+monil@fedora:~/Desktop/Work/DECS/Project$ podman start cs744-db1 
+cs744-db1
+
+
+
+SHOW max_connections;
+SHOW wal_buffers;
+SHOW shared_buffers;
+SHOW effective_cache_size;
+SHOW synchronous_commit;
+ALTER SYSTEM RESET wal_buffers;
+ALTER SYSTEM RESET shared_buffers;
+ALTER SYSTEM RESET synchronous_commit;
+SELECT pg_reload_conf();
+
+ALTER SYSTEM SET max_connections = 200;
