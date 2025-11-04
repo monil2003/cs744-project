@@ -1,7 +1,0 @@
-build/
-.vscode/
-.idea/
-.git/
-*.o
-*.out
-*.log

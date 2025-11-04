@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/monil/Desktop/Work/DECS/Project/load_generator/main.cpp" "CMakeFiles/loader.dir/main.cpp.o" "gcc" "CMakeFiles/loader.dir/main.cpp.o.d"
+  "/home/monil/Desktop/Work/DECS/Project/load_generator/load_generator.cpp" "CMakeFiles/loader.dir/load_generator.cpp.o" "gcc" "CMakeFiles/loader.dir/load_generator.cpp.o.d"
   "" "loader" "gcc" "CMakeFiles/loader.dir/link.d"
   )
 

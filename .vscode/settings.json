@@ -66,6 +66,7 @@
         "codecvt": "cpp",
         "cstring": "cpp",
         "map": "cpp",
-        "source_location": "cpp"
+        "source_location": "cpp",
+        "fstream": "cpp"
     }
 }

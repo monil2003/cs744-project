@@ -72,28 +72,28 @@ include CMakeFiles/loader.dir/flags.make
 CMakeFiles/loader.dir/codegen:
 .PHONY : CMakeFiles/loader.dir/codegen
 
-CMakeFiles/loader.dir/main.cpp.o: CMakeFiles/loader.dir/flags.make
-CMakeFiles/loader.dir/main.cpp.o: /home/monil/Desktop/Work/DECS/Project/load_generator/main.cpp
-CMakeFiles/loader.dir/main.cpp.o: CMakeFiles/loader.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/monil/Desktop/Work/DECS/Project/load_generator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/loader.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/loader.dir/main.cpp.o -MF CMakeFiles/loader.dir/main.cpp.o.d -o CMakeFiles/loader.dir/main.cpp.o -c /home/monil/Desktop/Work/DECS/Project/load_generator/main.cpp
+CMakeFiles/loader.dir/load_generator.cpp.o: CMakeFiles/loader.dir/flags.make
+CMakeFiles/loader.dir/load_generator.cpp.o: /home/monil/Desktop/Work/DECS/Project/load_generator/load_generator.cpp
+CMakeFiles/loader.dir/load_generator.cpp.o: CMakeFiles/loader.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/monil/Desktop/Work/DECS/Project/load_generator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/loader.dir/load_generator.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/loader.dir/load_generator.cpp.o -MF CMakeFiles/loader.dir/load_generator.cpp.o.d -o CMakeFiles/loader.dir/load_generator.cpp.o -c /home/monil/Desktop/Work/DECS/Project/load_generator/load_generator.cpp
 
-CMakeFiles/loader.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/loader.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/monil/Desktop/Work/DECS/Project/load_generator/main.cpp > CMakeFiles/loader.dir/main.cpp.i
+CMakeFiles/loader.dir/load_generator.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/loader.dir/load_generator.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/monil/Desktop/Work/DECS/Project/load_generator/load_generator.cpp > CMakeFiles/loader.dir/load_generator.cpp.i
 
-CMakeFiles/loader.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/loader.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/monil/Desktop/Work/DECS/Project/load_generator/main.cpp -o CMakeFiles/loader.dir/main.cpp.s
+CMakeFiles/loader.dir/load_generator.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/loader.dir/load_generator.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/monil/Desktop/Work/DECS/Project/load_generator/load_generator.cpp -o CMakeFiles/loader.dir/load_generator.cpp.s
 
 # Object files for target loader
 loader_OBJECTS = \
-"CMakeFiles/loader.dir/main.cpp.o"
+"CMakeFiles/loader.dir/load_generator.cpp.o"
 
 # External object files for target loader
 loader_EXTERNAL_OBJECTS =
 
-loader: CMakeFiles/loader.dir/main.cpp.o
+loader: CMakeFiles/loader.dir/load_generator.cpp.o
 loader: CMakeFiles/loader.dir/build.make
 loader: CMakeFiles/loader.dir/compiler_depend.ts
 loader: /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlienc.a

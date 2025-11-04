@@ -8,7 +8,7 @@ set(CMAKE_TOOLCHAIN_FILE "$ENV{HOME}/dev/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
 find_package(httplib CONFIG REQUIRED)
 
-add_executable(loader main.cpp)
+add_executable(loader load_generator.cpp)
 
 target_link_libraries(loader PRIVATE
     httplib::httplib

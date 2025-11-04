@@ -129,29 +129,29 @@ loader/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/loader.dir/build.make CMakeFiles/loader.dir/build
 .PHONY : loader/fast
 
-main.o: main.cpp.o
-.PHONY : main.o
+load_generator.o: load_generator.cpp.o
+.PHONY : load_generator.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/loader.dir/build.make CMakeFiles/loader.dir/main.cpp.o
-.PHONY : main.cpp.o
+load_generator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/loader.dir/build.make CMakeFiles/loader.dir/load_generator.cpp.o
+.PHONY : load_generator.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+load_generator.i: load_generator.cpp.i
+.PHONY : load_generator.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/loader.dir/build.make CMakeFiles/loader.dir/main.cpp.i
-.PHONY : main.cpp.i
+load_generator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/loader.dir/build.make CMakeFiles/loader.dir/load_generator.cpp.i
+.PHONY : load_generator.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+load_generator.s: load_generator.cpp.s
+.PHONY : load_generator.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/loader.dir/build.make CMakeFiles/loader.dir/main.cpp.s
-.PHONY : main.cpp.s
+load_generator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/loader.dir/build.make CMakeFiles/loader.dir/load_generator.cpp.s
+.PHONY : load_generator.cpp.s
 
 # Help Target
 help:
@@ -162,9 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... loader"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... load_generator.o"
+	@echo "... load_generator.i"
+	@echo "... load_generator.s"
 .PHONY : help
 
 

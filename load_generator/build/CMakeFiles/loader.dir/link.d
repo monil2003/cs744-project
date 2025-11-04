@@ -2,7 +2,7 @@ loader: \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crt1.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o \
-  CMakeFiles/loader.dir/main.cpp.o \
+  CMakeFiles/loader.dir/load_generator.cpp.o \
   /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlienc.a \
   /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlidec.a \
   /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlicommon.a \
@@ -40,7 +40,7 @@ loader: \
 
 /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o:
 
-CMakeFiles/loader.dir/main.cpp.o:
+CMakeFiles/loader.dir/load_generator.cpp.o:
 
 /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlienc.a:
 

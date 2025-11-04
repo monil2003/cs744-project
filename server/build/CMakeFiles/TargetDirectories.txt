@@ -1,0 +1,3 @@
+/home/monil/Desktop/Work/DECS/Project/server/build/CMakeFiles/server_app.dir
+/home/monil/Desktop/Work/DECS/Project/server/build/CMakeFiles/edit_cache.dir
+/home/monil/Desktop/Work/DECS/Project/server/build/CMakeFiles/rebuild_cache.dir

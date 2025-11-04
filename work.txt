@@ -4,6 +4,8 @@ install any dependencies if needed like autoconf etc.
 ./vcpkg install cpp-httplib
 ./vcpkg install libpqxx
 
+can download vcpkg folder directly from my drive link: https://drive.google.com/file/d/1Gzv9W6F1SiXt86AmB8KCFCSOSOwr1p7s/view?usp=sharing
+
 CMAKE:
 make a cmake file
 in a build folder first time run
@@ -13,7 +15,7 @@ cmake --build .
 ./server_app
 
 //Quick commands to re make it
-cmake .. -DCMAKE_TOOLCHAIN_FILE="/home/monil/Desktop/Work/DECS/Project (Copy)/vcpkg/scripts/buildsystems/vcpkg.cmake"
+cmake .. -DCMAKE_TOOLCHAIN_FILE="/home/monil/Desktop/Work/DECS/Project/vcpkg/scripts/buildsystems/vcpkg.cmake"
 cmake --build .
 
 in both the folders
@@ -24,6 +26,9 @@ To check:
 htop -p $(pgrep server_app)
 iostat -x -z 1
 vmstat 1
+
+To test:
+http://localhost:8080/key-5
 
 monil@fedora:~$ time nc -vz ep-fancy-glade-adxpjfbo-pooler.c-2.us-east-1.aws.neon.tech 5432
 Ncat: Version 7.92 ( https://nmap.org/ncat )
