@@ -56,7 +56,6 @@ void init_thread_conns() {
     //     thread_conn3 = make_unique<pqxx::connection>(DB_CONN3);
 }
 
-// Choose DB based on key hash
 pqxx::connection &get_thread_conn_for_key(const string &key) {
     init_thread_conns();
     size_t idx = std::hash<std::string>{}(key) % 2;
@@ -65,8 +64,6 @@ pqxx::connection &get_thread_conn_for_key(const string &key) {
     else return *thread_conn3;
 }
 
-
-//Metrics
 struct Metrics
 {
     atomic<size_t> cache_hits{0};

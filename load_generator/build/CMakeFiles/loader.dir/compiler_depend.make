@@ -458,7 +458,7 @@ loader: /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlicommon.a \
   /usr/lib/gcc/x86_64-redhat-linux/15/libgcc_s.so \
   /usr/lib/gcc/x86_64-redhat-linux/15/libstdc++.so \
   /usr/lib64/libc_nonshared.a \
-  CMakeFiles/loader.dir/open_loop_generator.cpp.o
+  CMakeFiles/loader.dir/main.cpp.o
 
 
 /usr/lib/gcc/x86_64-redhat-linux/15/libstdc++.so:
@@ -739,8 +739,6 @@ loader: /home/monil/dev/vcpkg/installed/x64-linux/debug/lib/libbrotlicommon.a \
 
 /usr/include/bits/signum-generic.h:
 
-CMakeFiles/loader.dir/open_loop_generator.cpp.o:
-
 /usr/include/c++/15/tr1/gamma.tcc:
 
 /usr/include/bits/signum-arch.h:
@@ -796,6 +794,8 @@ CMakeFiles/loader.dir/open_loop_generator.cpp.o:
 /usr/include/bits/types/FILE.h:
 
 /usr/include/bits/mman-map-flags-generic.h:
+
+CMakeFiles/loader.dir/main.cpp.o:
 
 /usr/include/c++/15/random:
 

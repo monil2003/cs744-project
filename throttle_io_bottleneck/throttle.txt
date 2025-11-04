@@ -1,0 +1,8 @@
+echo "7:0 rbps=10485760 wbps=10485760" | sudo tee /sys/fs/cgroup/system.slice/io.max
+
+
+echo "7:0 rbps=max wbps=max" | sudo tee /sys/fs/cgroup/system.slice/io.max
+
+test
+dd if=/dev/zero of=/var/lib/postgresql/data/testfile bs=1M count=500 oflag=direct
+rm /var/lib/postgresql/data/testfile

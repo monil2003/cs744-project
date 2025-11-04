@@ -1,9 +1,0 @@
-
-sudo ip a
-
-sudo virt-manager
-
-sudo mv ~/Downloads/Fedora-Cloud-Base-Generic-43-1.6.x86_64.qcow2 /var/lib/libvirt/images/
-sudo chown libvirt-qemu:kvm /var/lib/libvirt/images/Fedora-Cloud-Base-Generic-43-1.6.x86_64.qcow2
-sudo chmod 644 /var/lib/libvirt/images/Fedora-Cloud-Base-Generic-43-1.6.x86_64.qcow2
-sudo virt-customize -a /var/lib/libvirt/images/Fedora-Cloud-Base-Generic-43-1.6.x86_64.qcow2 --root-password password:fedora

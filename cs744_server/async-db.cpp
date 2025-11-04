@@ -12,7 +12,7 @@
 #include <memory>
 #include <thread>
 #include <functional>
-#include "concurrentqueue.h" // moodycamel concurrent queue
+#include "concurrentqueue.h" 
 
 using namespace std;
 using namespace std::chrono;
@@ -24,7 +24,7 @@ using std::shared_lock;
 using std::unique_lock;
 using std::shared_mutex;
 
-// ==================== CONFIGURATION ====================
+
 const size_t CACHE_MAX_SIZE = 100;
 const size_t NUM_DB_WRITERS = 32;
 const size_t BATCH_SIZE = 30;
@@ -39,7 +39,7 @@ const char *DB_CONN3 =
 std::string pattern = "xyz";
 std::string s;
 
-// ==================== THREAD-LOCAL CONNECTIONS ====================
+
 thread_local std::unique_ptr<pqxx::connection> thread_conn1;
 thread_local std::unique_ptr<pqxx::connection> thread_conn2;
 thread_local std::unique_ptr<pqxx::connection> thread_conn3;
@@ -86,7 +86,6 @@ pqxx::connection &get_thread_writer_conn_for_key(const string &key) {
         return *thread_writer_conn3;
 }
 
-// ==================== METRICS STRUCT ====================
 struct Metrics {
     atomic<size_t> cache_hits{0};
     atomic<size_t> cache_misses{0};
@@ -99,7 +98,7 @@ struct Metrics {
     atomic<double> avg_db_write_latency_ms{0.0};
 } metrics;
 
-// ==================== LRU CACHE ====================
+
 class LRUCache {
 public:
     LRUCache(size_t capacity) : max_size(capacity) {}
@@ -164,7 +163,7 @@ private:
 
 LRUCache kv_cache(CACHE_MAX_SIZE);
 
-// ==================== WRITE QUEUE ====================
+
 struct WriteRequest {
     string key;
     string value;
@@ -173,7 +172,7 @@ struct WriteRequest {
 moodycamel::ConcurrentQueue<WriteRequest> write_queue;
 atomic<bool> stop_writer{false};
 
-// ==================== DB WRITER LOOP ====================
+
 void db_writer_loop(int id) {
     vector<WriteRequest> batch;
     batch.reserve(BATCH_SIZE);
@@ -229,7 +228,7 @@ void db_writer_loop(int id) {
     cerr << "[Writer " << id << "] Exiting.\n";
 }
 
-// ==================== HTTP HANDLERS ====================
+
 string path_to_key(const httplib::Request &req) {
     string p = req.path;
     if (!p.empty() && p[0] == '/') return p.substr(1);
@@ -319,7 +318,7 @@ void handle_metrics(const httplib::Request &, httplib::Response &rsp) {
     rsp.set_content(ss.str(), "text/plain");
 }
 
-// ==================== TABLE CREATION ====================
+
 void ensure_table_exists() {
     auto create_if_missing = [](const char *conn_str) {
         try {
@@ -342,7 +341,7 @@ void ensure_table_exists() {
     create_if_missing(DB_CONN3);
 }
 
-// ==================== MAIN ====================
+
 int main() {
     ensure_table_exists();
 
