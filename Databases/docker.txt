@@ -31,3 +31,26 @@ docker wheel monil
 
 monil@fedora:~/Desktop/Work/DECS/Project$ docker inspect --format='{{.HostConfig.CpusetCpus}}' stress_postgres
 0-3
+
+
+setup docker replication
+CREATE SUBSCRIPTION sub_db1
+CONNECTION 'host=db1 port=5432 user=stressuser password=stresspass dbname=stressdb'
+PUBLICATION pub_db1
+WITH (create_slot = true, enabled = true);
+CREATE SUBSCRIPTION sub_db2
+CONNECTION 'host=db2 port=5432 user=stressuser password=stresspass dbname=stressdb'
+PUBLICATION pub_db2
+WITH (create_slot = true, enabled = true);
+
+
+monil@fedora:~/Desktop/Work/DECS/Project/throttle_io_bottleneck$ sudo ./mount.sh 
+Mounted /dev/loop0 on /mnt/loop1
+monil@fedora:~/Desktop/Work/DECS/Project/throttle_io_bottleneck$ sudo ./unmount.sh
+Unmounting /dev/loop0 from /mnt/loop1...
+Detaching /dev/loop0...
+Loop device /dev/loop0 detached and unmounted.
+monil@fedora:~/Desktop/Work/DECS/Project/throttle_io_bottleneck$ sudo rm -rf /mnt/loop1/pgdata1
+monil@fedora:~/Desktop/Work/DECS/Project/throttle_io_bottleneck$ sudo rm -rf /mnt/loop1/pgdata2
+monil@fedora:~/Desktop/Work/DECS/Project/throttle_io_bottleneck$ sudo ./mount.sh 
+Mounted /dev/loop0 on /mnt/loop1

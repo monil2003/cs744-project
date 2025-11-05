@@ -19,8 +19,8 @@ cmake .. -DCMAKE_TOOLCHAIN_FILE="/home/monil/Desktop/Work/DECS/Project/vcpkg/scr
 cmake --build .
 
 in both the folders
- then use taskset -c 4,5 ./server_app
-          taskset -c 6-15 ./loader 30 30 get_popular1
+ then use taskset -c 6-7 ./server_app
+          taskset -c 8-15 ./loader 30 30 get_popular1
 
 To check:
 htop -p $(pgrep server_app)

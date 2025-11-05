@@ -22,7 +22,6 @@ using std::shared_lock;
 using std::shared_mutex;
 using std::unique_lock;
 
-
 const size_t CACHE_MAX_SIZE = 100;
 
 const char *DB_CONN1 =
@@ -41,18 +40,22 @@ thread_local unique_ptr<pqxx::connection> thread_conn1;
 thread_local unique_ptr<pqxx::connection> thread_conn2;
 thread_local unique_ptr<pqxx::connection> thread_conn3;
 
-void init_thread_conns() {
+void init_thread_conns()
+{
     if (!thread_conn1 || !thread_conn1->is_open())
         thread_conn1 = make_unique<pqxx::connection>(DB_CONN1);
     if (!thread_conn2 || !thread_conn2->is_open())
         thread_conn2 = make_unique<pqxx::connection>(DB_CONN2);
 }
 
-pqxx::connection &get_thread_conn_for_key(const string &key) {
+pqxx::connection &get_thread_conn_for_key(const string &key)
+{
     init_thread_conns();
     size_t idx = std::hash<std::string>{}(key) % 2;
-    if (idx == 0) return *thread_conn1;
-    else return *thread_conn2;
+    if (idx == 0)
+        return *thread_conn1;
+    else
+        return *thread_conn2;
 }
 
 struct Metrics
@@ -67,7 +70,6 @@ struct Metrics
     atomic<double> avg_db_read_latency_ms{0.0};
     atomic<double> avg_db_write_latency_ms{0.0};
 } metrics;
-
 
 class LRUCache
 {
@@ -204,8 +206,39 @@ void handle_get(const httplib::Request &req, httplib::Response &rsp)
     }
     catch (const exception &e)
     {
-        rsp.status = 500;
-        rsp.set_content(string("Database error: ") + e.what(), "text/plain");
+        // rsp.status = 500;
+        // rsp.set_content(string("Database error: ") + e.what(), "text/plain");
+        try
+        {
+            pqxx::connection c3("host=127.0.0.1 port=5434 dbname=stressdb user=stressuser password=stresspass");
+            pqxx::work W3(c3);
+            string query = "SELECT value_text FROM kv_store WHERE key_text = " + W3.quote(key) + ";";
+            pqxx::result R3 = W3.exec(query);
+            W3.commit();
+
+            metrics.total_db_reads++;
+            auto latency = duration_cast<milliseconds>(steady_clock::now() - start_time).count();
+            double cur_avg = metrics.avg_db_read_latency_ms.load();
+            metrics.avg_db_read_latency_ms.store((cur_avg + latency) / 2.0);
+
+            if (R3.empty())
+            {
+                rsp.status = 404;
+                rsp.set_content("Key Not Found (DB3 Fallback)", "text/plain");
+            }
+            else
+            {
+                string value_from_db = R3[0][0].as<string>();
+                kv_cache.put(key, value_from_db);
+                rsp.status = 200;
+                rsp.set_content(value_from_db, "text/plain");
+            }
+        }
+        catch (const exception &e2)
+        {
+            rsp.status = 500;
+            rsp.set_content("All database reads failed", "text/plain");
+        }
     }
 }
 
@@ -247,7 +280,7 @@ void handle_post(const httplib::Request &req, httplib::Response &rsp)
     catch (const exception &e)
     {
         rsp.status = 500;
-        rsp.set_content(string("Database error: ") + e.what(), "text/plain");
+        rsp.set_content(string("Database error: Currently service down"), "text/plain");
     }
 }
 
@@ -354,7 +387,7 @@ int main()
     cout << "Starting HTTP KV Server (sync DB I/O) on port 8080..." << endl;
     svr.new_task_queue = []
     {
-        return new httplib::ThreadPool(200); // increase manually
+        return new httplib::ThreadPool(200); 
     };
 
     svr.listen("0.0.0.0", 8080);
