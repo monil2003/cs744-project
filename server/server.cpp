@@ -40,22 +40,28 @@ thread_local unique_ptr<pqxx::connection> thread_conn1;
 thread_local unique_ptr<pqxx::connection> thread_conn2;
 thread_local unique_ptr<pqxx::connection> thread_conn3;
 
-void init_thread_conns()
+void init_thread_conns1()
 {
     if (!thread_conn1 || !thread_conn1->is_open())
         thread_conn1 = make_unique<pqxx::connection>(DB_CONN1);
-    if (!thread_conn2 || !thread_conn2->is_open())
+}
+void init_thread_conns2(){
+      if (!thread_conn2 || !thread_conn2->is_open())
         thread_conn2 = make_unique<pqxx::connection>(DB_CONN2);
 }
 
 pqxx::connection &get_thread_conn_for_key(const string &key)
 {
-    init_thread_conns();
+    
     size_t idx = std::hash<std::string>{}(key) % 2;
-    if (idx == 0)
+    if (idx == 0){
+        init_thread_conns1();
         return *thread_conn1;
-    else
+    }
+    else{
+        init_thread_conns2();
         return *thread_conn2;
+    }     
 }
 
 struct Metrics
@@ -254,7 +260,6 @@ void handle_post(const httplib::Request &req, httplib::Response &rsp)
     }
 
     string value = req.body;
-    kv_cache.put(key, value);
     int kx = 0;
 
     auto start_time = steady_clock::now();
@@ -274,6 +279,8 @@ void handle_post(const httplib::Request &req, httplib::Response &rsp)
         double cur_avg = metrics.avg_db_write_latency_ms.load();
         metrics.avg_db_write_latency_ms.store((cur_avg + latency) / 2.0);
 
+        kv_cache.put(key, value);
+        
         rsp.status = 201;
         rsp.set_content("Stored key: " + key, "text/plain");
     }

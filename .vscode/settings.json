@@ -67,6 +67,16 @@
         "cstring": "cpp",
         "map": "cpp",
         "source_location": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "any": "cpp",
+        "bitset": "cpp",
+        "complex": "cpp",
+        "csignal": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp",
+        "regex": "cpp",
+        "future": "cpp",
+        "stack": "cpp",
+        "cinttypes": "cpp"
     }
 }

@@ -33,16 +33,6 @@ monil@fedora:~/Desktop/Work/DECS/Project$ docker inspect --format='{{.HostConfig
 0-3
 
 
-setup docker replication
-CREATE SUBSCRIPTION sub_db1
-CONNECTION 'host=db1 port=5432 user=stressuser password=stresspass dbname=stressdb'
-PUBLICATION pub_db1
-WITH (create_slot = true, enabled = true);
-CREATE SUBSCRIPTION sub_db2
-CONNECTION 'host=db2 port=5432 user=stressuser password=stresspass dbname=stressdb'
-PUBLICATION pub_db2
-WITH (create_slot = true, enabled = true);
-
 
 monil@fedora:~/Desktop/Work/DECS/Project/throttle_io_bottleneck$ sudo ./mount.sh 
 Mounted /dev/loop0 on /mnt/loop1
@@ -54,3 +44,41 @@ monil@fedora:~/Desktop/Work/DECS/Project/throttle_io_bottleneck$ sudo rm -rf /mn
 monil@fedora:~/Desktop/Work/DECS/Project/throttle_io_bottleneck$ sudo rm -rf /mnt/loop1/pgdata2
 monil@fedora:~/Desktop/Work/DECS/Project/throttle_io_bottleneck$ sudo ./mount.sh 
 Mounted /dev/loop0 on /mnt/loop1
+
+CREATE PUBLICATION pub_db1 FOR TABLE kv_store;
+SELECT * FROM pg_publication;
+DROP PUBLICATION pub_name;
+setup docker replication
+
+
+CREATE TABLE IF NOT EXISTS kv_store (
+                key_text TEXT PRIMARY KEY,
+                value_text TEXT
+            );
+CREATE SUBSCRIPTION sub_db1
+CONNECTION 'host=db1 port=5432 user=stressuser password=stresspass dbname=stressdb'
+PUBLICATION pub_db1
+WITH (create_slot = true, enabled = true);
+CREATE SUBSCRIPTION sub_db2
+CONNECTION 'host=db2 port=5432 user=stressuser password=stresspass dbname=stressdb'
+PUBLICATION pub_db2
+WITH (create_slot = true, enabled = true);
+
+
+stressdb=# ALTER SUBSCRIPTION sub_db1 DISABLE;
+ALTER SUBSCRIPTION
+stressdb=# ALTER SUBSCRIPTION sub_db1 SET (slot_name = NONE);
+ALTER SUBSCRIPTION
+stressdb=# DROP SUBSCRIPTION sub_db1;
+DROP SUBSCRIPTION
+stressdb=# ALTER SUBSCRIPTION sub_db2 DISABLE;
+ALTER SUBSCRIPTION
+stressdb=# ALTER SUBSCRIPTION sub_db2 SET (slot_name = NONE);
+ALTER SUBSCRIPTION
+stressdb=# DROP SUBSCRIPTION sub_db2;
+DROP SUBSCRIPTION
+stressdb=# select * from pg_subscription;
+
+docker-compose down -v
+docker-compose up --build
+
