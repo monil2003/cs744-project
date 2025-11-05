@@ -9,7 +9,6 @@ declare -A seen
 for f in /sys/devices/system/cpu/cpu*/topology/thread_siblings_list; do
     siblings=$(cat $f | tr '-' ',' | tr ',' ' ')
     first=$(echo $siblings | awk '{print $1}')
-    # Skip already printed sibling groups
     if [[ -z "${seen[$siblings]}" ]]; then
         seen[$siblings]=1
         count=$(echo $siblings | wc -w)

@@ -310,13 +310,13 @@ void handle_delete(const httplib::Request &req, httplib::Response &rsp)
         W.exec(query);
         W.commit();
 
-        kv_cache.erase(key);
         metrics.total_db_writes++;
 
         auto latency = duration_cast<milliseconds>(steady_clock::now() - start_time).count();
         double cur_avg = metrics.avg_db_write_latency_ms.load();
         metrics.avg_db_write_latency_ms.store((cur_avg + latency) / 2.0);
 
+        kv_cache.erase(key);
         rsp.status = 200;
         rsp.set_content("Deleted key: " + key, "text/plain");
     }

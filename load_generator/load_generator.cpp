@@ -32,7 +32,7 @@ void worker_thread(const string &w_type, int thread_id)
 
         if (w_type == "get_popular1")
         {
-            key = "key-" + to_string((thread_id % 10) + 1);
+            key = "key-" + to_string((thread_id % 10));
             string path = "/" + key;
             start_time = chrono::steady_clock::now();
             res = cli.Get(path.c_str());

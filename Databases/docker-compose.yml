@@ -1,3 +1,4 @@
+# For normal and quick purpose
 # version: "3.8"
 # services:
 #   db1:
@@ -47,7 +48,7 @@
 #   pgdata2:
 #////////////////////////////////////////////////////
 
-
+# For special and throttle purpose
 version: "3.8"
 
 services:
@@ -86,6 +87,8 @@ services:
     command: postgres -c max_connections=500 
     cpuset: "2-3"
     mem_limit: 500m
+
+# /////////////////////////////////////////////////////////////////////////////////////
 
 # Optimization (Replicated)
 

@@ -6,3 +6,13 @@ echo "7:0 rbps=max wbps=max" | sudo tee /sys/fs/cgroup/system.slice/io.max
 test
 dd if=/dev/zero of=/var/lib/postgresql/data/testfile bs=1M count=500 oflag=direct
 rm /var/lib/postgresql/data/testfile
+
+
+Just in case loops properly not set use this
+sudo umount /mnt/loop1
+sudo losetup -d /dev/loop1
+lsblk | grep loop
+sudo ./mount.sh
+lsblk | grep loop
+sudo ./unmount.sh 
+lsblk | grep loop

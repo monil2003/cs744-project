@@ -82,3 +82,6 @@ stressdb=# select * from pg_subscription;
 docker-compose down -v
 docker-compose up --build
 
+sudo rm -rf /mnt/loop1/pgdata1
+sudo rm -rf /mnt/loop1/pgdata2
+sudo rm -rf /mnt/loop1/pgdata3
