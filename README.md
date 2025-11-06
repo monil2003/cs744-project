@@ -35,11 +35,22 @@ This project implements a **distributed HTTP-based Key-Value (KV) store** with *
 
 ### 🚀 Running the System
 
-1. Start all PostgreSQL containers (`db1`, `db2`, `db3`).  
-2. Manually configure replication as per the documentation.  
-3. Launch the HTTP server:  
+1. Start all PostgreSQL containers (`db1`, `db2`, `db3`).
+2. First go to databases folder & start the docker.
+   ```bash
+   cd Databases
+   docker compose up -d
+3. Manually configure replication as per the documentation.
+4. Next go to server folder
+   ```bash
+   cd ../server
+6. Launch the HTTP server:  
    ```bash
    ./server_app
-4. Can accesss txt files in each folder for code snippets for running
+   Can also use cmake files in the folder to re-compile and then run the above code.
+   ```bash
+   cd build
+   cmake --build .
+7. Can accesss txt files in each folder for code snippets for running
 
 Author: Monil Manish Desai
