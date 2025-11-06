@@ -47,10 +47,10 @@ This project implements a **distributed HTTP-based Key-Value (KV) store** with *
 6. Launch the HTTP server:  
    ```bash
    ./server_app
-   Can also use cmake files in the folder to re-compile and then run the above code.
+7. Can also use cmake files in the folder to re-compile and then run the above code.
    ```bash
    cd build
    cmake --build .
-7. Can accesss txt files in each folder for code snippets for running
+8. Can accesss txt files in each folder for code snippets for running
 
 Author: Monil Manish Desai
