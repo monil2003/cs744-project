@@ -32,7 +32,7 @@ This project implements a **distributed HTTP-based Key-Value (KV) store** with *
   - **Direct Mode:** db1 and db2 only (performance testing)
 
 <p align="center">
-  <img src="./system_architecture.png" alt="System Architecture" width="60%">
+  <img src="./sys_architecture.png" alt="System Architecture" width="60%">
 </p>
 
 ---
