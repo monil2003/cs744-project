@@ -39,3 +39,4 @@ real	0m0.682s
 user	0m0.014s
 sys	0m0.010s
 
+ps -eLo pid,tid,comm | grep loop
