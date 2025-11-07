@@ -9,6 +9,16 @@ This project implements a **distributed HTTP-based Key-Value (KV) store** with *
 
 - **HTTP Server (httplib, localhost:8080):**  
   Handles concurrent client requests using thread pools and exposes RESTful endpoints for KV operations.
+  It listens on port **8080** and supports the following RESTful endpoints:
+
+    - **GET /<key>** – Retrieve a value for a given key  
+    - **POST /<key>** – Insert or update a key-value pair  
+    - **DELETE /<key>** – Remove a key-value pair  
+    - **GET /metrics** – Return cache and database performance metrics  
+
+  Each HTTP request follows one of two main execution paths:
+    1. **In-memory access:** When the requested key is found in the LRU cache (fast lookup).  
+    2. **Disk access:** When the key is missing from cache and the system queries or updates the PostgreSQL database.
 
 - **PostgreSQL Databases:**  
   - `db1` (port 5432) and `db2` (port 5433) act as primary databases.  
