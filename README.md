@@ -21,8 +21,9 @@ This project implements a **distributed HTTP-based Key-Value (KV) store** with *
   - **Replicated Mode:** db1, db2, and db3 (high availability)  
   - **Direct Mode:** db1 and db2 only (performance testing)
 
-
-![System Architecture](./system_architecture.png)
+<p align="center">
+  <img src="./system_architecture.png" alt="System Architecture" width="60%">
+</p>
 
 ---
 
