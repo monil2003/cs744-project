@@ -50,10 +50,21 @@ void init_thread_conns2(){
         thread_conn2 = make_unique<pqxx::connection>(DB_CONN2);
 }
 
+size_t fnv1a_hash(const string &key) {
+    const size_t prime = 1099511628211ULL;
+    size_t hash = 14695981039346656037ULL;
+
+    for (char c : key) {
+        hash ^= static_cast<size_t>(c);
+        hash *= prime;
+    }
+    return hash;
+}
+
 pqxx::connection &get_thread_conn_for_key(const string &key)
 {
     
-    size_t idx = std::hash<std::string>{}(key) % 2;
+    size_t idx = fnv1a_hash(key) % 2;
     if (idx == 0){
         init_thread_conns1();
         return *thread_conn1;

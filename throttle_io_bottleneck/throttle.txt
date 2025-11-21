@@ -6,6 +6,8 @@ echo "7:0 rbps=max wbps=max" | sudo tee /sys/fs/cgroup/system.slice/io.max
 test
 dd if=/dev/zero of=/var/lib/postgresql/data/testfile bs=1M count=500 oflag=direct
 rm /var/lib/postgresql/data/testfile
+sudo systemd-run --slice=system.slice --pipe dd if=/dev/zero of=/mnt/loop1/testfile bs=1M count=500 oflag=direct
+sudo rm /mnt/loop1/testfile
 
 
 Just in case loops properly not set use this
@@ -16,3 +18,19 @@ sudo ./mount.sh
 lsblk | grep loop
 sudo ./unmount.sh 
 lsblk | grep loop
+
+monil@fedora ~/D/W/D/P/Databases (main) [1]> sudo systemd-run --slice=system.slice --pipe dd if=/dev/zero of=/mnt/loop1/testfile bs=1M count=500 oflag=direct
+Running as unit: run-p4145106-i4145107.service
+500+0 records in
+500+0 records out
+524288000 bytes (524 MB, 500 MiB) copied, 53.9851 s, 9.7 MB/s
+monil@fedora ~/D/W/D/P/Databases (main)> sudo rm /mnt/loop1/testfile
+monil@fedora ~/D/W/D/P/Databases (main)> echo "7:0 rbps=max wbps=max" | sudo tee /sys/fs/cgroup/system.slice/io.max
+7:0 rbps=max wbps=max
+monil@fedora ~/D/W/D/P/Databases (main)> sudo systemd-run --slice=system.slice --pipe dd if=/dev/zero of=/mnt/loop1/testfile bs=1M count=500 oflag=direct
+Running as unit: run-p4145233-i4145234.service
+500+0 records in
+500+0 records out
+524288000 bytes (524 MB, 500 MiB) copied, 0.139988 s, 3.7 GB/s
+monil@fedora ~/D/W/D/P/Databases (main)> sudo rm /mnt/loop1/testfile
+
